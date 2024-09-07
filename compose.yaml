@@ -30,7 +30,8 @@ services:
     restart: unless-stopped
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
+# Update Password
+      - GF_SECURITY_ADMIN_PASSWORD=Ch@ngeMeN0w!
     volumes:
       - ./grafana:/etc/grafana/provisioning/datasources
 
@@ -47,7 +48,24 @@ services:
     ports:
       - 7860:7860
     volumes:
-      - /mnt/waterboy/comfyui-models:/home/user/app/models
+# Change volume to model location
+      - $PWD/comfyui-models:/home/user/app/models
+
+  registry:
+    image: registry:2
+    container_name: registry
+    environment:
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+# Update hostname as needed
+      - REGISTRY_HTTP_HOST=https://registry.sealingfamily.com
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+# Change volume to where you want to store registry info
+      - $PWD/registry-data:/var/lib/registry
+
 volumes:
   prom_data:
   open-webui:
+  registry-data:
